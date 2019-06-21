@@ -1,8 +1,9 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BroseRouter as Router} from 'react-router-dom'
+
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './App';
-
+import './assets/less/index.less';
 ReactDOM.render(<Router><App /></Router>,document.getElementById('root'));
