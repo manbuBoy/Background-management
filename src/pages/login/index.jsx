@@ -1,12 +1,13 @@
 
 
 import React,{Component} from 'react';
-import {Form,Icon,Input,Button,message} from 'antd';
+import {Form,Icon,Input,Button} from 'antd';
 //引入图片资源
 import  logo from './logo.png';
 //引入样式文件
-import './index.less';
-import axios from 'axios';
+
+
+import { reqLogin } from '../../api/index';
 const Item =Form.Item;
 
 class Login extends Component {
@@ -15,7 +16,7 @@ class Login extends Component {
 
         e.preventDefault();
         // 用来校验表单并获取表单的值
-        this.props.form.validateFields((error, values) => {
+        this.props.form.validateFields(async (error, values) => {
             // console.log(error, values);
 
             if (!error) {
@@ -24,25 +25,17 @@ class Login extends Component {
                 // 发送请求，请求登录,这请求路径本身是5000，但是由于我们搞了一个
                 //代理服务器解决跨域问题，又因为，我们上线的时候不存在跨域问题。所以，我们直接写/Login
 
-                axios.post('/login',{ username,password })
 
-                .then((res) =>{
+                //调用reqlogin函数,等他执行完了才能执行下面的代码
+               const result = await reqLogin(username,password);
 
-                    const { data } = res;
-                    console.log(data);
-
-                    if ( data.status===0 ) {
-                        this.props.history.replace('/')
-
-                    }else{
-                        message.error(data.msg, 2);
-                        this.props.form.resetFields(['password']);
-                    }
-                })
-                .catch((error) =>{
-                    message.error('网络连接错误', 2);
+                if (result) {
+                    // 登录成功
+                    this.props.history.replace('/');
+                } else {
+                    // 登录失败
                     this.props.form.resetFields(['password']);
-                })
+                }
 
 
             } else {
