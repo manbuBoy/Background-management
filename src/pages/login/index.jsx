@@ -4,10 +4,13 @@ import React,{Component} from 'react';
 import {Form,Icon,Input,Button} from 'antd';
 //引入图片资源
 import  logo from './logo.png';
+import { setItem } from '../../utils/storge-tools';
+import './index.less';
+
 //引入样式文件
 
-
 import { reqLogin } from '../../api/index';
+
 const Item =Form.Item;
 
 class Login extends Component {
@@ -31,7 +34,11 @@ class Login extends Component {
 
                 if (result) {
                     // 登录成功
+                    //进行登录验证，和7天登陆限制，在这里调用功能函数，
+                    setItem(result);
+
                     this.props.history.replace('/');
+
                 } else {
                     // 登录失败
                     this.props.form.resetFields(['password']);
