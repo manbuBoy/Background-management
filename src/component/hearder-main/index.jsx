@@ -26,27 +26,37 @@ import menuList from '../../config/menu-config';
     }
 
     async componentDidMount() {
-        setInterval(() => {
-            this.setState({
-                sysTime:Date.now()
-            })
-        },1000)
+        this.ClearTime = setInterval(() => {
+                    this.setState({
+                        sysTime:Date.now()
+                    })
+                },1000)
         //发送请求，请求天气
-        const result = await reqWeather();
 
+        const {cancel, promise} = reqWeather();
+        this.cancel = cancel;
+        // 拿到请求回来的天气数据
+        const result = await promise;
+
+        //更新新天气
         if (result) {
-            this.setState(result);
+            this.setState(result)
         }
     }
+    //清除定时器，发送的请求。
+     componentWillUnmount() {
+        //清除定时器
+        clearInterval(this.ClearTime);
+        //清除天气的请求
+         this.cancel();
+     }
 
-    //当刷新的时候触发的生命周期函数；
+     //当刷新的时候触发的生命周期函数；
     //由于该函数拥props就有了三大属性，hository,location,match
      componentWillReceiveProps(nextProps) {
          this.title = this.getTitle(nextProps);
      }
-
      getTitle = (nextProps) => {
-
          // 因为当我点击的时候pathname会存在location中
          const { pathname } = nextProps.location;
          // 由于，我引入了数据，所以menuList的长度可以拿到
@@ -69,7 +79,7 @@ import menuList from '../../config/menu-config';
          }
      };
     logout = () => {
-        console.log('111')
+
         Modal.confirm({
             title: '您确认要退出登录吗？',
             okText: '确认',
@@ -107,7 +117,6 @@ import menuList from '../../config/menu-config';
             </div>
         </div>
     }
-
 }
 //只要被Switch抱着，就会拥有路由的三大属性props,statch
 export default withRouter(HeaderMain);

@@ -9,10 +9,12 @@ export const reqValidateUserInfo = (id) => ajaxt('/validate/user', {id}, 'POST')
 
 export const reqWeather = function () {
 
-    return new Promise((resolve,reject) => {
+    let cancel = null;
+    const  promise = new Promise((resolve,reject) => {
         //官网建议使用jsnp来处理跨域问题
         //发送请求
-        jsonp(`http://api.map.baidu.com/telematics/v3/weather?location=深圳&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`, {}, function (err, data) {
+        //jsonp的返回值是一个函数，可以清除请求
+        cancel = jsonp(`http://api.map.baidu.com/telematics/v3/weather?location=深圳&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`, {}, function (err, data) {
 
             console.log(data);
             if (!err) {
@@ -30,6 +32,13 @@ export const reqWeather = function () {
                 resolve();
             }
         })
-    })
+    });
+    return{
+        promise,
+        cancel
+    }
+
 }
 export const reqCategories = (parentId) => ajaxt('/manage/category/list', {parentId});
+
+export const reqAddCategory = (parentId,categoryName) => ajaxt('/manage/category/add', {parentId,categoryName},'post');
