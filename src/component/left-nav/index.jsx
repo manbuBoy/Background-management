@@ -43,8 +43,19 @@ class LeftNav extends Component {
 
     componentWillMount() {
             //拿到他的路径
-            const { pathname } = this.props.location;
-            console.log(this.props.location)
+            let { pathname } = this.props.location;
+            // 对路径进行正则效验
+            const pathnameReg = /^\/product\//;
+
+
+            if (pathnameReg.test(pathname)) {
+
+                pathname = pathname.slice(0, 8);
+                console.log(pathname)
+            }
+            let isHome = true;
+
+
             this.menus = menuList.map((menu) => {
                 //判断是一级还是二级菜单
                 const children = menu.children;
@@ -64,6 +75,7 @@ class LeftNav extends Component {
                                     // 说明当前地址是一个二级菜单，需要展开一级菜单
                                     // 初始化展开的菜单
                                     this.openKey = menu.key;
+                                    isHome = false;
                                 }
                                 //这个item是二级菜单里面的点击的位置
                                 return this.createMenu(item);
@@ -71,10 +83,13 @@ class LeftNav extends Component {
                         }
                     </SubMenu>
                 } else {
+                        if (menu.key === pathname ) isHome = false;
                         //说明你点击的是个一级菜单所以直接返回去就可以了。
                         return this.createMenu(menu);
                 }
-            })
+            });
+            //初始化选中菜单
+        this.selectedKey = isHome ? '/home' : pathname;
     }
 
 

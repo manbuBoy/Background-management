@@ -8,9 +8,9 @@ import Category from '../category';
 import Product from '../product';
 import User from '../user';
 import Role from '../role';
-import Line from '../line';
-import Bar from '../bar';
-import Pie from '../pie';
+import Line from '../charts/line';
+import Bar from '../charts/bar';
+import Pie from '../charts/pie';
 
 
 import { Switch,Route,Redirect} from 'react-router-dom';
@@ -66,9 +66,6 @@ export default class Admin extends Component{
                         {/*把头部的内容都放在下面这个组件中完成，为了更好的操作*/}
                         <HeaderMain />
                     </Header>
-
-
-
                     <Content style={{ margin: '25px 16px' }}>
                         <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
@@ -84,8 +81,6 @@ export default class Admin extends Component{
                                 <Route path="/charts/pie" component={Pie}/>
                                 <Redirect to="/home"/>
                             </Switch>
-
-
                         </div>
 
                     </Content>

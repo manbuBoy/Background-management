@@ -16,7 +16,7 @@ export const reqWeather = function () {
         //jsonp的返回值是一个函数，可以清除请求
         cancel = jsonp(`http://api.map.baidu.com/telematics/v3/weather?location=深圳&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`, {}, function (err, data) {
 
-            console.log(data);
+            // console.log(data);
             if (!err) {
                 const { weather,dayPictureUrl } = data.results[0].weather_data[0];
                 resolve({
@@ -41,4 +41,7 @@ export const reqWeather = function () {
 }
 export const reqCategories = (parentId) => ajaxt('/manage/category/list', {parentId});
 
-export const reqAddCategory = (parentId,categoryName) => ajaxt('/manage/category/add', {parentId,categoryName},'post');
+
+export const reqAddCategory = (parentId,categoryName) => ajaxt('/manage/category/add', {parentId,categoryName},'POST');
+export const reqUpdateCategoryName = (categoryId,categoryName) => ajaxt('/manage/category/update', {categoryId,categoryName},'POST');
+export const reqProducts = (pageNum,pageSize) => ajaxt('/manage/product/list', {pageNum,pageSize});

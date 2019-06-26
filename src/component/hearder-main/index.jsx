@@ -58,7 +58,15 @@ import menuList from '../../config/menu-config';
      }
      getTitle = (nextProps) => {
          // 因为当我点击的时候pathname会存在location中
-         const { pathname } = nextProps.location;
+         let { pathname } = nextProps.location;
+
+         //对这个路径进行正则校验，
+         const pathnameReg = /^\/product\//;
+         if (pathnameReg.test(pathname)) {
+             pathname = pathname.slice(0,8);
+         }
+
+
          // 由于，我引入了数据，所以menuList的长度可以拿到
          //进行查找判断是一级菜单，还是二级菜单。
          for (let i = 0; i < menuList.length; i++) {
