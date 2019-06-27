@@ -9,32 +9,45 @@ const { Option } = Select;
 
 export default class Index extends Component {
     state = {
-        products: []
+        products: [],
+        total:0,//表示请求数据的总数量
+        loading:true//决定loading图片的开关
     };
 
 
-    async componentDidMount() {
-        //发送请求，之请求一个页面的三个数据
-        const result = await reqProducts(1,3);
-        console.log(result)
-        if (result) {
-            this.setState({
-                //更新他的值
-                products:result.list
-
-            })
-
-        }
+   componentDidMount() {
+        //初始化的请求数量
+        this. getProducts(1,3);
 
     }
+
+    //根据请求的数据生成分页的数量
+    getProducts = async (pageNum,pageSize) => {
+       //产生loading
+       this.setState({
+           loading:true
+       })
+        //发送请求，之请求一个页面的三个数据
+        const result = await reqProducts(pageNum,pageSize);
+
+        if (result) {
+            this.setState({
+                //得到总的数据有多少
+                total:result.total,
+                //更新他的值,拿到请求回来的值
+                //并把它存在products数组中
+                products:result.list,
+            //    请求成功loading图片消失
+                loading: false
+            })
+        }
+    };
     //触发这个函数切换页面，由于需要返回上一页所以用push
     showAddProduct = () => {
         this.props.history.push('/product/save-update')
     };
-
-
     render() {
-        const {products} = this.state;
+        const { products,total,loading } = this.state;
 
         const columns = [
             {
@@ -89,8 +102,14 @@ export default class Index extends Component {
                     showQuickJumper: true,
                     showSizeChanger: true,
                     pageSizeOptions: ['3', '6', '9', '12'],
-                    defaultPageSize: 3
+                    defaultPageSize: 3,
+                //    根据条件生成分页的页数需要添加的属性
+                    total,
+                    onChange:this.getProducts,
+                    onShowSizeChange:this.getProducts,
                 }}
+                rowKey='_id'
+                loading={loading}
             />
         </Card>;
 

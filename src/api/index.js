@@ -45,3 +45,5 @@ export const reqCategories = (parentId) => ajaxt('/manage/category/list', {paren
 export const reqAddCategory = (parentId,categoryName) => ajaxt('/manage/category/add', {parentId,categoryName},'POST');
 export const reqUpdateCategoryName = (categoryId,categoryName) => ajaxt('/manage/category/update', {categoryId,categoryName},'POST');
 export const reqProducts = (pageNum,pageSize) => ajaxt('/manage/product/list', {pageNum,pageSize});
+
+export const reqAddProduct = ({name, desc, price, categoryId, pCategoryId, detail}) => ajaxt('/manage/product/add', {name, desc, price, categoryId, pCategoryId, detail},'POST');

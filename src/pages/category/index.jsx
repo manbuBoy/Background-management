@@ -29,7 +29,8 @@ export default class Category extends Component{
     }
 
 
-    //对函数进行优化的操作，省去很多代码
+    //对函数进行优化的操作，省去很多代码，通过参数改变stateName的状态
+    //说白了就是个开关
     toggleDisplay = (stateName,stateValue) => {
         return () => {
             this.setState({
@@ -45,7 +46,7 @@ export default class Category extends Component{
     //     })
     //
     // }
-    //隐藏商品
+    //当点击取消按钮的时候，隐藏商品
     hideAddCategory =() => {
         this.setState({
             isShowAddCategory: false
@@ -53,6 +54,7 @@ export default class Category extends Component{
 
     }
     //添加商品,思路，首先，进行表单验证，在此表单收集数据，最后发送请求
+    //也就是确认按钮的事情。
     addCategory = () => {
         //这个地方就是父组件拿到了，子组件的数据也就是下面通过组件自带的方法
         //wrappedComponentRef，之前我们是建一个函数的方式拿的,validateFields,来做
@@ -186,8 +188,7 @@ export default class Category extends Component{
                 }
             }
         })
-    }
-
+    };
     fetchCategories =async (parentId) => {
 
         //初始化，londing的状态
@@ -228,15 +229,12 @@ export default class Category extends Component{
         }
 
     };
-
     goBack = () => {
         this.setState({
             //通过这个状态来进行判断
             isShowSubCategories: false
         })
     }
-
-
     render() {
 
         const {
@@ -256,8 +254,10 @@ export default class Category extends Component{
             {
                 title: '操作',
                 className:"category-operation",
+
+                //拿到的是，后台请求回来的数据
                 render: category => {
-                    // console.log(category);
+                    // console.log(category)
                     return <div>
                         <MyButton onClick={this.saveCategory(category)}>修改名称</MyButton>
                         {
@@ -294,12 +294,10 @@ export default class Category extends Component{
 
         return <Card title={isShowSubCategories ? <div><MyButton onClick={this.goBack}>一级分类</MyButton><Icon type="arrow-right"/>&nbsp;{this.parentCategory.name}</div>:"一级列表"}
                      extra={<Button type="primary" onClick={this.toggleDisplay('isShowAddCategory', true)}>
-                            <Icon type='plus'  />添加类品
-                            </Button>}>
+                            <Icon type='plus'  />添加类品 </Button>}>
             <Table
                 columns={columns}
                 dataSource={isShowSubCategories ? subCategories :categories}
-
                 bordered
                 pagination={{
                     pageSizeOptions:['3','6','9','12'],
@@ -312,7 +310,7 @@ export default class Category extends Component{
             />
             <Modal
                 title="Modal"
-                //状态页面就改变
+                //通过isShowAddCategory控制modal的展示和隐藏
                 visible={isShowAddCategory}
                 // 自定义两个函数，表示隐藏和显示
                 onOk={this.addCategory}
