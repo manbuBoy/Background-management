@@ -47,3 +47,5 @@ export const reqUpdateCategoryName = (categoryId,categoryName) => ajaxt('/manage
 export const reqProducts = (pageNum,pageSize) => ajaxt('/manage/product/list', {pageNum,pageSize});
 
 export const reqAddProduct = ({name, desc, price, categoryId, pCategoryId, detail}) => ajaxt('/manage/product/add', {name, desc, price, categoryId, pCategoryId, detail},'POST');
+
+export const reqUpdateProduct = ({name, desc, price, categoryId, pCategoryId, detail, _id}) => ajaxt('/manage/product/update', {name, desc, price, categoryId, pCategoryId, detail,_id},'POST');

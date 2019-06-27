@@ -46,9 +46,17 @@ export default class Index extends Component {
     showAddProduct = () => {
         this.props.history.push('/product/save-update')
     };
+    //出发的修改事件
+    showUpdateProduct = (product) => {
+        //主要做的就是页面的跳转，和传数据
+        return () => {
+            //因为这句话的执行，所以，我们接下来的操作，在/product/save-update
+            //里面进行操作
+            this.props.history.push('/product/save-update',product)
+        }
+    }
     render() {
         const { products,total,loading } = this.state;
-
         const columns = [
             {
                 title:'商品名称',
@@ -78,7 +86,7 @@ export default class Index extends Component {
                 render: (product) => {
                     return <div>
                         <MyButton>详情</MyButton>
-                        <MyButton>修改</MyButton>
+                        <MyButton onClick={this.showUpdateProduct(product)}>修改</MyButton>
                     </div>
                 }
             },
